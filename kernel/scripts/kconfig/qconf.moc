@@ -1,0 +1,516 @@
+/****************************************************************************
+** Meta object code from reading C++ file 'qconf.h'
+**
+** Created: Thu Feb 20 08:04:57 2014
+**      by: The Qt Meta Object Compiler version 62 (Qt 4.7.0)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#if !defined(Q_MOC_OUTPUT_REVISION)
+#error "The header file 'qconf.h' doesn't include <QObject>."
+#elif Q_MOC_OUTPUT_REVISION != 62
+#error "This file was generated using the moc from 4.7.0. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+QT_BEGIN_MOC_NAMESPACE
+static const uint qt_meta_data_ConfigList[] = {
+
+ // content:
+       5,       // revision
+       0,       // classname
+       0,    0, // classinfo
+      10,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       4,       // signalCount
+
+ // signals: signature, parameters, type, tag, flags
+      17,   12,   11,   11, 0x05,
+      36,   12,   11,   11, 0x05,
+      56,   11,   11,   11, 0x05,
+      73,   11,   11,   11, 0x05,
+
+ // slots: signature, parameters, type, tag, flags
+      89,   12,   11,   11, 0x0a,
+     113,  108,   11,   11, 0x0a,
+     146,  137,   11,   11, 0x0a,
+     177,  108,   11,   11, 0x0a,
+     202,   11,   11,   11, 0x0a,
+     220,   11,   11,   11, 0x0a,
+
+       0        // eod
+};
+
+static const char qt_meta_stringdata_ConfigList[] = {
+    "ConfigList\0\0menu\0menuChanged(menu*)\0"
+    "menuSelected(menu*)\0parentSelected()\0"
+    "gotFocus(menu*)\0setRootMenu(menu*)\0"
+    "item\0updateList(ConfigItem*)\0item,val\0"
+    "setValue(ConfigItem*,tristate)\0"
+    "changeValue(ConfigItem*)\0updateSelection()\0"
+    "saveSettings()\0"
+};
+
+const QMetaObject ConfigList::staticMetaObject = {
+    { &Q3ListView::staticMetaObject, qt_meta_stringdata_ConfigList,
+      qt_meta_data_ConfigList, 0 }
+};
+
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &ConfigList::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
+const QMetaObject *ConfigList::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
+}
+
+void *ConfigList::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_ConfigList))
+        return static_cast<void*>(const_cast< ConfigList*>(this));
+    return Q3ListView::qt_metacast(_clname);
+}
+
+int ConfigList::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = Q3ListView::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        switch (_id) {
+        case 0: menuChanged((*reinterpret_cast< menu*(*)>(_a[1]))); break;
+        case 1: menuSelected((*reinterpret_cast< menu*(*)>(_a[1]))); break;
+        case 2: parentSelected(); break;
+        case 3: gotFocus((*reinterpret_cast< menu*(*)>(_a[1]))); break;
+        case 4: setRootMenu((*reinterpret_cast< menu*(*)>(_a[1]))); break;
+        case 5: updateList((*reinterpret_cast< ConfigItem*(*)>(_a[1]))); break;
+        case 6: setValue((*reinterpret_cast< ConfigItem*(*)>(_a[1])),(*reinterpret_cast< tristate(*)>(_a[2]))); break;
+        case 7: changeValue((*reinterpret_cast< ConfigItem*(*)>(_a[1]))); break;
+        case 8: updateSelection(); break;
+        case 9: saveSettings(); break;
+        default: ;
+        }
+        _id -= 10;
+    }
+    return _id;
+}
+
+// SIGNAL 0
+void ConfigList::menuChanged(menu * _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 0, _a);
+}
+
+// SIGNAL 1
+void ConfigList::menuSelected(menu * _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
+}
+
+// SIGNAL 2
+void ConfigList::parentSelected()
+{
+    QMetaObject::activate(this, &staticMetaObject, 2, 0);
+}
+
+// SIGNAL 3
+void ConfigList::gotFocus(menu * _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 3, _a);
+}
+static const uint qt_meta_data_ConfigLineEdit[] = {
+
+ // content:
+       5,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       0,    0, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+       0        // eod
+};
+
+static const char qt_meta_stringdata_ConfigLineEdit[] = {
+    "ConfigLineEdit\0"
+};
+
+const QMetaObject ConfigLineEdit::staticMetaObject = {
+    { &QLineEdit::staticMetaObject, qt_meta_stringdata_ConfigLineEdit,
+      qt_meta_data_ConfigLineEdit, 0 }
+};
+
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &ConfigLineEdit::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
+const QMetaObject *ConfigLineEdit::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
+}
+
+void *ConfigLineEdit::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_ConfigLineEdit))
+        return static_cast<void*>(const_cast< ConfigLineEdit*>(this));
+    return QLineEdit::qt_metacast(_clname);
+}
+
+int ConfigLineEdit::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QLineEdit::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    return _id;
+}
+static const uint qt_meta_data_ConfigView[] = {
+
+ // content:
+       5,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       7,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       3,       // signalCount
+
+ // signals: signature, parameters, type, tag, flags
+      12,   11,   11,   11, 0x05,
+      34,   11,   11,   11, 0x05,
+      57,   11,   11,   11, 0x05,
+
+ // slots: signature, parameters, type, tag, flags
+      79,   11,   11,   11, 0x0a,
+      97,   11,   11,   11, 0x0a,
+     116,   11,   11,   11, 0x0a,
+     134,   11,   11,   11, 0x0a,
+
+       0        // eod
+};
+
+static const char qt_meta_stringdata_ConfigView[] = {
+    "ConfigView\0\0showNameChanged(bool)\0"
+    "showRangeChanged(bool)\0showDataChanged(bool)\0"
+    "setShowName(bool)\0setShowRange(bool)\0"
+    "setShowData(bool)\0setOptionMode(QAction*)\0"
+};
+
+const QMetaObject ConfigView::staticMetaObject = {
+    { &Q3VBox::staticMetaObject, qt_meta_stringdata_ConfigView,
+      qt_meta_data_ConfigView, 0 }
+};
+
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &ConfigView::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
+const QMetaObject *ConfigView::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
+}
+
+void *ConfigView::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_ConfigView))
+        return static_cast<void*>(const_cast< ConfigView*>(this));
+    return Q3VBox::qt_metacast(_clname);
+}
+
+int ConfigView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = Q3VBox::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        switch (_id) {
+        case 0: showNameChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 1: showRangeChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 2: showDataChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 3: setShowName((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 4: setShowRange((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 5: setShowData((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 6: setOptionMode((*reinterpret_cast< QAction*(*)>(_a[1]))); break;
+        default: ;
+        }
+        _id -= 7;
+    }
+    return _id;
+}
+
+// SIGNAL 0
+void ConfigView::showNameChanged(bool _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 0, _a);
+}
+
+// SIGNAL 1
+void ConfigView::showRangeChanged(bool _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
+}
+
+// SIGNAL 2
+void ConfigView::showDataChanged(bool _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 2, _a);
+}
+static const uint qt_meta_data_ConfigInfoView[] = {
+
+ // content:
+       5,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       5,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       2,       // signalCount
+
+ // signals: signature, parameters, type, tag, flags
+      16,   15,   15,   15, 0x05,
+      39,   15,   15,   15, 0x05,
+
+ // slots: signature, parameters, type, tag, flags
+      64,   59,   15,   15, 0x0a,
+      79,   15,   15,   15, 0x0a,
+      94,   15,   15,   15, 0x0a,
+
+       0        // eod
+};
+
+static const char qt_meta_stringdata_ConfigInfoView[] = {
+    "ConfigInfoView\0\0showDebugChanged(bool)\0"
+    "menuSelected(menu*)\0menu\0setInfo(menu*)\0"
+    "saveSettings()\0setShowDebug(bool)\0"
+};
+
+const QMetaObject ConfigInfoView::staticMetaObject = {
+    { &Q3TextBrowser::staticMetaObject, qt_meta_stringdata_ConfigInfoView,
+      qt_meta_data_ConfigInfoView, 0 }
+};
+
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &ConfigInfoView::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
+const QMetaObject *ConfigInfoView::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
+}
+
+void *ConfigInfoView::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_ConfigInfoView))
+        return static_cast<void*>(const_cast< ConfigInfoView*>(this));
+    return Q3TextBrowser::qt_metacast(_clname);
+}
+
+int ConfigInfoView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = Q3TextBrowser::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        switch (_id) {
+        case 0: showDebugChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 1: menuSelected((*reinterpret_cast< menu*(*)>(_a[1]))); break;
+        case 2: setInfo((*reinterpret_cast< menu*(*)>(_a[1]))); break;
+        case 3: saveSettings(); break;
+        case 4: setShowDebug((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        default: ;
+        }
+        _id -= 5;
+    }
+    return _id;
+}
+
+// SIGNAL 0
+void ConfigInfoView::showDebugChanged(bool _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 0, _a);
+}
+
+// SIGNAL 1
+void ConfigInfoView::menuSelected(menu * _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
+}
+static const uint qt_meta_data_ConfigSearchWindow[] = {
+
+ // content:
+       5,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       2,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+ // slots: signature, parameters, type, tag, flags
+      20,   19,   19,   19, 0x0a,
+      35,   19,   19,   19, 0x0a,
+
+       0        // eod
+};
+
+static const char qt_meta_stringdata_ConfigSearchWindow[] = {
+    "ConfigSearchWindow\0\0saveSettings()\0"
+    "search()\0"
+};
+
+const QMetaObject ConfigSearchWindow::staticMetaObject = {
+    { &QDialog::staticMetaObject, qt_meta_stringdata_ConfigSearchWindow,
+      qt_meta_data_ConfigSearchWindow, 0 }
+};
+
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &ConfigSearchWindow::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
+const QMetaObject *ConfigSearchWindow::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
+}
+
+void *ConfigSearchWindow::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_ConfigSearchWindow))
+        return static_cast<void*>(const_cast< ConfigSearchWindow*>(this));
+    return QDialog::qt_metacast(_clname);
+}
+
+int ConfigSearchWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QDialog::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        switch (_id) {
+        case 0: saveSettings(); break;
+        case 1: search(); break;
+        default: ;
+        }
+        _id -= 2;
+    }
+    return _id;
+}
+static const uint qt_meta_data_ConfigMainWindow[] = {
+
+ // content:
+       5,       // revision
+       0,       // classname
+       0,    0, // classinfo
+      14,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+ // slots: signature, parameters, type, tag, flags
+      18,   17,   17,   17, 0x0a,
+      36,   17,   17,   17, 0x0a,
+      55,   17,   17,   17, 0x0a,
+      74,   17,   17,   17, 0x0a,
+      83,   17,   17,   17, 0x0a,
+     101,   17,   96,   17, 0x0a,
+     114,   17,   17,   17, 0x0a,
+     129,   17,   17,   17, 0x0a,
+     144,   17,   17,   17, 0x0a,
+     161,   17,   17,   17, 0x0a,
+     177,   17,   17,   17, 0x0a,
+     192,   17,   17,   17, 0x0a,
+     204,   17,   17,   17, 0x0a,
+     216,   17,   17,   17, 0x0a,
+
+       0        // eod
+};
+
+static const char qt_meta_stringdata_ConfigMainWindow[] = {
+    "ConfigMainWindow\0\0changeMenu(menu*)\0"
+    "setMenuLink(menu*)\0listFocusChanged()\0"
+    "goBack()\0loadConfig()\0bool\0saveConfig()\0"
+    "saveConfigAs()\0searchConfig()\0"
+    "showSingleView()\0showSplitView()\0"
+    "showFullView()\0showIntro()\0showAbout()\0"
+    "saveSettings()\0"
+};
+
+const QMetaObject ConfigMainWindow::staticMetaObject = {
+    { &Q3MainWindow::staticMetaObject, qt_meta_stringdata_ConfigMainWindow,
+      qt_meta_data_ConfigMainWindow, 0 }
+};
+
+#ifdef Q_NO_DATA_RELOCATION
+const QMetaObject &ConfigMainWindow::getStaticMetaObject() { return staticMetaObject; }
+#endif //Q_NO_DATA_RELOCATION
+
+const QMetaObject *ConfigMainWindow::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->metaObject : &staticMetaObject;
+}
+
+void *ConfigMainWindow::qt_metacast(const char *_clname)
+{
+    if (!_clname) return 0;
+    if (!strcmp(_clname, qt_meta_stringdata_ConfigMainWindow))
+        return static_cast<void*>(const_cast< ConfigMainWindow*>(this));
+    return Q3MainWindow::qt_metacast(_clname);
+}
+
+int ConfigMainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = Q3MainWindow::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        switch (_id) {
+        case 0: changeMenu((*reinterpret_cast< menu*(*)>(_a[1]))); break;
+        case 1: setMenuLink((*reinterpret_cast< menu*(*)>(_a[1]))); break;
+        case 2: listFocusChanged(); break;
+        case 3: goBack(); break;
+        case 4: loadConfig(); break;
+        case 5: { bool _r = saveConfig();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 6: saveConfigAs(); break;
+        case 7: searchConfig(); break;
+        case 8: showSingleView(); break;
+        case 9: showSplitView(); break;
+        case 10: showFullView(); break;
+        case 11: showIntro(); break;
+        case 12: showAbout(); break;
+        case 13: saveSettings(); break;
+        default: ;
+        }
+        _id -= 14;
+    }
+    return _id;
+}
+QT_END_MOC_NAMESPACE
