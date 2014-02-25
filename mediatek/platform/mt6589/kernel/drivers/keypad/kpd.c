@@ -216,16 +216,15 @@ void kpd_auto_test_for_factorymode(void)
 {
 	unsigned int COL_REG[8];
 	int i;
-	int time = 500;
 	upmu_set_rg_homekey_puen(0x00);
 	
 	kpd_pwrkey_pmic_handler(1);
-	msleep(time);
+	msleep(100);
 	kpd_pwrkey_pmic_handler(0);
 	
 #ifdef KPD_PMIC_RSTKEY_MAP
 	kpd_pmic_rstkey_handler(1);
-	msleep(time);
+	msleep(100);
 	kpd_pmic_rstkey_handler(0);
 #endif
 
@@ -236,10 +235,10 @@ void kpd_auto_test_for_factorymode(void)
 	{
 		if (COL_REG[i] != 0)
 		{
-			msleep(time);
+			msleep(100);
 			kpd_print("kpd kcolumn %d pull down!\n", COL_REG[i]);
 			mt_set_gpio_pull_select(COL_REG[i], 0);
-			msleep(time);
+			msleep(100);
 			kpd_print("kpd kcolumn %d pull up!\n", COL_REG[i]);
 			mt_set_gpio_pull_select(COL_REG[i], 1);
 		}

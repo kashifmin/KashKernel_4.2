@@ -58,7 +58,7 @@ struct otp_struct {
 };
 
 struct otp_struct OV8826_current_otp2;
-uint32_t OV8826_R_gain1=0x400,OV8826_B_gain1=0x400,OV8826_G_gain1=0x400;
+uint32_t OV8826_R_gain1=0x200,OV8826_B_gain1=0x400,OV8826_G_gain1=0x200;
 
 extern kal_uint16 OV8826_read_cmos_sensor(kal_uint32 addr);
 //extern OV8826_write_cmos_sensor(addr, para);

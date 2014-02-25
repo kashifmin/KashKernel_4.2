@@ -71,81 +71,39 @@ Functions
 *****************************************************************************/
 static void work_timeOutFunc(struct work_struct *data);
 
-
-//BEGIN<20130503><flashlight>wangyanhui
-#define FLASHLIGHT_EN_PIN   152
-#define TORCHLIGHT_ENPIN     167
-static int gtorchmode = 0; 
-void Enable_light(void)
-{
-	if(g_duty)
-	{
-		PK_DBG("FLASH_MODE\n");
-
-		mt_set_gpio_out(TORCHLIGHT_ENPIN, 0);
-		mt_set_gpio_out(FLASHLIGHT_EN_PIN, 1);
-	}
-	else
-	{
-		PK_DBG("TORCH_MODE\n");
-		mt_set_gpio_out(TORCHLIGHT_ENPIN, 1);
-		mt_set_gpio_out(FLASHLIGHT_EN_PIN, 0);
-	}
-}
-
-void Disable_light(void)
-{
-	//mt_set_gpio_mode(TORCHLIGHT_ENPIN, GPIO_MODE_GPIO);
-	//mt_set_gpio_dir(TORCHLIGHT_ENPIN, GPIO_DIR_OUT);
-	mt_set_gpio_out(TORCHLIGHT_ENPIN, 0);
-		
-	//mt_set_gpio_mode(FLASHLIGHT_EN_PIN, GPIO_MODE_GPIO);
-	//mt_set_gpio_dir(FLASHLIGHT_EN_PIN, GPIO_DIR_OUT);
-	mt_set_gpio_out(FLASHLIGHT_EN_PIN, 0);
-}
-//END<20130503><flashlight>wangyanhui
 int FL_enable(void)
 {
-	//upmu_set_rg_bst_drv_1m_ck_pdn(0);
-	//upmu_set_flash_en(1);
-	Enable_light();//LINE<20130503><flashlight>wangyanhui
+	upmu_set_rg_bst_drv_1m_ck_pdn(0);
+	upmu_set_flash_en(1);
     return 0;
 }
 
 int FL_disable(void)
 {
 
-	//upmu_set_flash_en(0);
-	//upmu_set_rg_bst_drv_1m_ck_pdn(1);
-	Disable_light();//LINE<20130503><flashlight>wangyanhui
+	//upmu_set_rg_bst_drv_1m_ck_pdn(1);		//line <FLASHLIGHT> <flashlight can't disable> <20121220> lishengli
+	upmu_set_flash_en(0);
     return 0;
 }
 
 int FL_dim_duty(kal_uint32 duty)
 {
-	//upmu_set_flash_dim_duty(duty);
+	upmu_set_flash_dim_duty(duty);
     return 0;
 }
 
 int FL_step(kal_uint32 step)
 {
-	//int sTab[8]={0,2,4,6,9,11,13,15};
-	//upmu_set_flash_sel(sTab[step]);
+
+    step=7;//LINE <> <DATE20121228> <提高闪光灯亮度，目前400多mA> wupingzhou
+	upmu_set_flash_sel(step);
     return 0;
 }
 
 int FL_init(void)
 {
-	//upmu_set_flash_dim_duty(0);
-	//upmu_set_flash_sel(0);
-
-    mt_set_gpio_mode(TORCHLIGHT_ENPIN, GPIO_MODE_GPIO);
-    mt_set_gpio_dir(TORCHLIGHT_ENPIN, GPIO_DIR_OUT);
-	mt_set_gpio_mode(FLASHLIGHT_EN_PIN, GPIO_MODE_GPIO);
-	mt_set_gpio_dir(FLASHLIGHT_EN_PIN, GPIO_DIR_OUT);
-	mt_set_gpio_out(TORCHLIGHT_ENPIN, 0);
-	mt_set_gpio_out(FLASHLIGHT_EN_PIN, 0);
-
+	upmu_set_flash_dim_duty(0);
+	upmu_set_flash_sel(0);
 	FL_disable();
 	INIT_WORK(&workTimeOut, work_timeOutFunc);
     return 0;
@@ -204,13 +162,6 @@ static int constant_flashlight_ioctl(MUINT32 cmd, MUINT32 arg)
 		case FLASH_IOC_SET_TIME_OUT_TIME_MS:
 			PK_DBG("FLASH_IOC_SET_TIME_OUT_TIME_MS: %d\n",arg);
 			g_timeOutTimeMs=arg;
-
-			//BEGIN<20130503><flashlight>wangyanhui
-			if(g_timeOutTimeMs != 0)
-				gtorchmode = 0;
-			else 
-				gtorchmode = 1;
-			//END<20130503><flashlight>wangyanhui
 		break;
 
 
