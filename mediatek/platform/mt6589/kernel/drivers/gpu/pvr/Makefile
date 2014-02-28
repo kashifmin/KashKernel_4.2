@@ -45,9 +45,9 @@ ccflags-$(CONFIG_PVR_BUILD_RELEASE_MT6589) += \
 ccflags-$(CONFIG_PVR_BUILD_DEBUG_MT6589) += \
 	-include $(MTK_PATH_PLATFORM)/drivers/gpu/pvr/include4/config_kernel_$(VER).h
 
-ifeq ($(MTK_FORCE_GPU_89T), yes)
+#ifeq ($(MTK_FORCE_GPU_89T), yes)
 ccflags-y += -DMTK_FORCE_T
-endif
+#endif
 
 ifeq ($(MTK_FORCE_GPU_89M), yes)
 ccflags-y += -DMTK_FORCE_M
