@@ -28,12 +28,14 @@ typedef struct{
 }VBAT_TO_PERCENT;
 
 /* Battery Temperature Protection */
-#define MAX_CHARGE_TEMPERATURE  60   //<LINE><20130111>wangyanhui
-#define MIN_CHARGE_TEMPERATURE  -17  //<LINE><20130111>wangyanhui
+#define MAX_CHARGE_TEMPERATURE  62
+#define MIN_CHARGE_TEMPERATURE  -17
+#define MAX_RECHARGE_TEMPERATURE  58
+#define MIN_RECHARGE_TEMPERATURE  -13
 #define ERR_CHARGE_TEMPERATURE  0xFF
 
 /* Recharging Battery Voltage */
-#define RECHARGING_VOLTAGE      4110
+#define RECHARGING_VOLTAGE      4050
 
 /* Charging Current Setting */
 #define CONFIG_USB_IF 						0   
@@ -42,10 +44,20 @@ typedef struct{
 #define USB_CHARGER_CURRENT_CONFIGURED		Cust_CC_450MA	// def CONFIG_USB_IF
 #define USB_CHARGER_CURRENT					Cust_CC_450MA
 #define AC_CHARGER_CURRENT					Cust_CC_650MA	
+//Ivan added
+//#define FAN5405_AC_CHARGING_CURRENT_750
+//Ivan Charging current = FAN5405_AC_CHARGING_CURRENT_750 * 68 /51 ~= 1000mA
+#define TINNO_FAN5405_HIGH_VBATT	1
+#define TINNO_FAN5405_VOREG 0x24	//0x23=4.20; 0x24=4.22; 0x25=4.24; 0x26=4.26
+#define TINNO_BATTERY_FAIL_RECOVERY	1
+#define FAN5405_AC_CHARGING_CURRENT_750
+#define TINNO_2_STAGE_CHANGING_FOR_INDIA
 
 /* Battery Meter Solution */
 #define CONFIG_ADC_SOLUTION 	1
 
+//Ivan added for ES HW test
+#define CONFIG_DIS_CHECK_BATTERY 1
 /* Battery Voltage and Percentage Mapping Table */
 VBAT_TO_PERCENT Batt_VoltToPercent_Table[] = {
 	/*BattVolt,BattPercent*/
@@ -63,7 +75,7 @@ VBAT_TO_PERCENT Batt_VoltToPercent_Table[] = {
 };
 
 /* Precise Tunning */
-#define BATTERY_AVERAGE_SIZE 	15  //30
+#define BATTERY_AVERAGE_SIZE 	15
 //#define BATTERY_AVERAGE_SIZE   3
 
 /* Common setting */
@@ -82,12 +94,13 @@ VBAT_TO_PERCENT Batt_VoltToPercent_Table[] = {
 #define RBAT_PULL_UP_VOLT          1800
 //#define TBAT_OVER_CRITICAL_LOW     68237
 //#define TBAT_OVER_CRITICAL_LOW     483954
-#define TBAT_OVER_CRITICAL_LOW     67790
+#define TBAT_OVER_CRITICAL_LOW     124607
 #define BAT_TEMP_PROTECT_ENABLE    1
-#define BAT_NTC_10 1 //0  //<LINE><20130111>wangyanhui
+#define BAT_NTC_10 0
 #define BAT_NTC_47 0
 //#define BAT_NTC_CG103JF103F
-
+#define BAT_NTC_TINNO_10 1
+ 
 /* Battery Notify */
 #define BATTERY_NOTIFY_CASE_0001
 #define BATTERY_NOTIFY_CASE_0002
