@@ -15,7 +15,6 @@
 #include "mach/mt_cpufreq.h"
 #include "mach/mt_thermal.h"
 
-#define MTK_FORCE_CPU_89T
 
 #if En_ISR_log
 #define clc_isr_info(fmt, args...)     clc_notice( fmt, ##args)
@@ -1022,7 +1021,7 @@ u32 PTP_get_ptp_level(void)
     u32 ptp_level_temp;
 
     #if defined(MTK_FORCE_CPU_89T)
-        return 4; // 1.5GHz
+        return 3; // 1.5GHz
     #else
         ptp_level_temp = get_devinfo_with_index(3) & 0x7;
     

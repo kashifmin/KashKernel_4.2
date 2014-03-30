@@ -122,8 +122,7 @@ static unsigned int g_limited_max_ncpu;
 static unsigned int g_limited_max_freq;
 static unsigned int g_limited_min_freq;
 static unsigned int g_cpufreq_get_ptp_level = 0;
-/* static unsigned int g_max_freq_by_ptp = DVFS_F1;  default 1.2GHz */
-static unsigned int g_max_freq_by_ptp = DVFS_F0_1; /*added by kashifmin: Overclock to 1.5GHz */
+static unsigned int g_max_freq_by_ptp = DVFS_F1;  //default 1.2GHz
 
 static int g_ramp_down_count = 0;
 
@@ -132,8 +131,7 @@ static bool mt_cpufreq_ready = false;
 static bool mt_cpufreq_pause = false;
 static bool mt_cpufreq_ptpod_disable = false;
 static bool mt_cpufreq_ptpod_voltage_down = false;
-/* static bool mt_cpufreq_max_freq_overdrive = false; */
-static bool mt_cpufreq_max_freq_overdrive = true; /*added by kashifmin: Overclock to 1.5GHz */
+static bool mt_cpufreq_max_freq_overdrive = false;
 static bool mt_cpufreq_limit_max_freq_early_suspend = false;
 
 /* pmic volt by PTP-OD */
@@ -1048,7 +1046,7 @@ static int mt_cpufreq_target(struct cpufreq_policy *policy, unsigned int target_
     *************************************************/
     if(mt_cpufreq_limit_max_freq_early_suspend == true)
     {
-        freqs.new = DVFS_F0_1; /* Overclock @1.5GHz */
+        freqs.new = DVFS_F1;
         dprintk("mt_cpufreq_limit_max_freq_early_suspend, freqs.new = %d\n", freqs.new);
     }
 	
