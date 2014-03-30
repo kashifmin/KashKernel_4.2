@@ -34,13 +34,19 @@
 #include <asm/unwind.h>
 #include <asm/tls.h>
 #include <asm/system_misc.h>
-#include <linux/aee.h>
+
 #include "signal.h"
+#ifdef CONFIG_SEC_DEBUG
+#include <mach/sec_debug.h>
+#endif
 
 static const char *handler[]= { "prefetch abort", "data abort", "address exception", "interrupt" };
 
+#ifdef CONFIG_LGE_CRASH_HANDLER
+static int first_call_chain = 0;
+static int first_die = 1;
+#endif
 void *vectors_page;
-extern void aee_stop_nested_panic(struct pt_regs *regs);
 
 #ifdef CONFIG_DEBUG_USER
 unsigned int user_debug;
@@ -58,7 +64,14 @@ static void dump_mem(const char *, const char *, unsigned long, unsigned long);
 void dump_backtrace_entry(unsigned long where, unsigned long from, unsigned long frame)
 {
 #ifdef CONFIG_KALLSYMS
+#ifdef CONFIG_LGE_CRASH_HANDLER
+	if (first_call_chain)
+		set_crash_store_enable();
+#endif
 	printk("[<%08lx>] (%pS) from [<%08lx>] (%pS)\n", where, (void *)where, from, (void *)from);
+#ifdef CONFIG_LGE_CRASH_HANDLER
+	set_crash_store_disable();
+#endif
 #else
 	printk("Function entered at [<%08lx>] from [<%08lx>]\n", where, from);
 #endif
@@ -240,16 +253,26 @@ static int __die(const char *str, int err, struct thread_info *thread, struct pt
 	static int die_counter;
 	int ret;
 
-        ipanic_oops_start();
+#ifdef CONFIG_LGE_CRASH_HANDLER
+	if (first_die) {
+		first_call_chain = 1;
+		first_die = 0;
+	}
+	set_kernel_crash_magic_number();
+	set_crash_store_enable();
+#endif
+
 	printk(KERN_EMERG "Internal error: %s: %x [#%d]" S_PREEMPT S_SMP
 	       S_ISA "\n", str, err, ++die_counter);
 
+#ifdef CONFIG_LGE_CRASH_HANDLER
+	set_crash_store_disable();
+#endif
+
 	/* trap and error numbers are mostly meaningless on ARM */
 	ret = notify_die(DIE_OOPS, str, regs, err, tsk->thread.trap_no, SIGSEGV);
-    if (ret == NOTIFY_STOP) {
-        ipanic_oops_end();
-        return ret;
-    }
+	if (ret == NOTIFY_STOP)
+		return ret;
 
 	print_modules();
 	__show_regs(regs);
@@ -261,9 +284,11 @@ static int __die(const char *str, int err, struct thread_info *thread, struct pt
 			 THREAD_SIZE + (unsigned long)task_stack_page(tsk));
 		dump_backtrace(regs, tsk);
 		dump_instr(KERN_EMERG, regs);
+#ifdef CONFIG_LGE_CRASH_HANDLER
+		first_call_chain = 0;
+#endif
 	}
 
-    ipanic_oops_end();
 	return ret;
 }
 
@@ -281,6 +306,9 @@ void die(const char *str, struct pt_regs *regs, int err)
 	oops_enter();
 
 	raw_spin_lock_irq(&die_lock);
+#ifdef CONFIG_SEC_DEBUG_SCHED_LOG
+	secdbg_sched_msg("!!die!!");
+#endif
 	console_verbose();
 	bust_spinlocks(1);
 	if (!user_mode(regs))
@@ -288,19 +316,15 @@ void die(const char *str, struct pt_regs *regs, int err)
 	if (bug_type != BUG_TRAP_TYPE_NONE)
 		str = "Oops - BUG";
 	ret = __die(str, err, thread, regs);
-
+#ifdef CONFIG_SEC_DEBUG_SUBSYS
+	sec_debug_save_die_info(str, regs);
+#endif
 	if (regs && kexec_should_crash(thread->task))
 		crash_kexec(regs);
 
 	bust_spinlocks(0);
 	add_taint(TAINT_DIE);
-    /*  I don't like die->panic process be interrupted
-     *  by ISR, or other process.
-     *  The only side effect is , on smp, when other cpu
-     *  die at the same time, it may block on die_lock.
-     *  However, this is rather acceptable.
-     */
-	//raw_spin_unlock_irq(&die_lock);
+	raw_spin_unlock_irq(&die_lock);
 	oops_exit();
 
 	if (in_interrupt())
@@ -381,28 +405,9 @@ static int call_undef_hook(struct pt_regs *regs, unsigned int instr)
 
 asmlinkage void __exception do_undefinstr(struct pt_regs *regs)
 {
-	struct thread_info *thread = current_thread_info();
-	unsigned int correction = thumb_mode(regs) ? 2 : 4;
 	unsigned int instr;
 	siginfo_t info;
 	void __user *pc;
-
-	if (!user_mode(regs)) {
-		thread->cpu_excp++;
-		if (thread->cpu_excp == 1) {
-			thread->regs_on_excp = (void *)regs;
-		}
-		if (thread->cpu_excp >= 2) {
-			aee_stop_nested_panic(regs);
-		}
-	}
-
-	/*
-	 * According to the ARM ARM, PC is 2 or 4 bytes ahead,
-	 * depending whether we're in Thumb mode or not.
-	 * Correct this offset.
-	 */
-	regs->ARM_pc -= correction;
 
 	pc = (void __user *)instruction_pointer(regs);
 
@@ -430,7 +435,7 @@ asmlinkage void __exception do_undefinstr(struct pt_regs *regs)
 	}
 
 	if (call_undef_hook(regs, instr) == 0)
-		goto do_undefinstr_exit;
+		return;
 
 #ifdef CONFIG_DEBUG_USER
 	if (user_debug & UDBG_UNDEFINED) {
@@ -446,11 +451,6 @@ asmlinkage void __exception do_undefinstr(struct pt_regs *regs)
 	info.si_addr  = pc;
 
 	arm_notify_die("Oops - undefined instruction", regs, &info, 0, 6);
-
-do_undefinstr_exit:
-	if (!user_mode(regs)) {
-		thread->cpu_excp--;
-	}
 }
 
 asmlinkage void do_unexp_fiq (struct pt_regs *regs)
