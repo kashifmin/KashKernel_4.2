@@ -5576,7 +5576,6 @@
 0x00000000	setup_max_cpus	vmlinux	EXPORT_SYMBOL
 0x00000000	commit_creds	vmlinux	EXPORT_SYMBOL
 0x00000000	__nf_ct_expect_find	vmlinux	EXPORT_SYMBOL_GPL
-0x00000000	hwmsen_gsensor_add	vmlinux	EXPORT_SYMBOL_GPL
 0x00000000	platform_device_register	vmlinux	EXPORT_SYMBOL_GPL
 0x00000000	fb_register_client	vmlinux	EXPORT_SYMBOL
 0x00000000	match_hex	vmlinux	EXPORT_SYMBOL
