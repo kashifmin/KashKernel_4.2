@@ -1,0 +1,14 @@
+/cgen/inc/custom_cfg_module_default.h
+/cgen/inc/custom_cfg_module_file.h
+/common/partition_define.h
+/common/pmt.h
+/kernel/dct/dct/*
+!/kernel/dct/dct/codegen.dws
+/preloader/cust_part.c
+/preloader/custom_emi.c
+/preloader/MTK_Loader_Info.tag
+/uboot/inc/mt65xx_partition.h
+/uboot/partition.c
+/lk/inc/mt_partition.h
+/lk/partition.c
+
