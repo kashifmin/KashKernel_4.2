@@ -4,6 +4,9 @@ SUBLEVEL = 16
 EXTRAVERSION =
 NAME = Saber-toothed Squirrel
 
+#Temp hack for mtk modules built with debug by default
+export TARGET_BUILD_VARIANT = user
+
 # *DOCUMENTATION*
 # To see a list of typical targets execute "make help"
 # More info can be located in ./README
@@ -192,10 +195,10 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/i386/ -e s/sun4u/sparc64/ \
 # Default value for CROSS_COMPILE is not to prefix executables
 # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
 export KBUILD_BUILDHOST := $(SUBARCH)
-#ARCH		?= $(SUBARCH)
+#ARCH		?= arm
 #CROSS_COMPILE	?= $(CONFIG_CROSS_COMPILE:"%"=%)
 ARCH		?= arm
-CROSS_COMPILE	?= /root/android/toolchain-4.6.3/bin/arm-linux-androideabi-
+CROSS_COMPILE	?= /root/android/toolchains/arm-linux-androideabi-4.7/bin/arm-linux-androideabi-
 
 # Architecture as present in compile.h
 UTS_MACHINE 	:= $(ARCH)
@@ -245,10 +248,15 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	  else if [ -x /bin/bash ]; then echo /bin/bash; \
 	  else echo sh; fi ; fi)
 
-HOSTCC       = ccache gcc
-HOSTCXX      = ccache g++
+HOSTCC       = gcc
+HOSTCXX      = g++
+ifdef CONFIG_CC_OPTIMIZE_ALOT
+HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O3 -fgcse-lm -fgcse-sm -fsched-spec-load -fforce-addr -fsingle-precision-constant -ftree-vectorize -fomit-frame-pointer
+HOSTCXXFLAGS = -O3 -fgcse-lm -fgcse-sm -fsched-spec-load -fforce-addr -fsingle-precision-constant -marm -mfpu=neon-vfpv4 -ftree-vectorize -mvectorize-with-neon-quad
+else
 HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer
 HOSTCXXFLAGS = -O2
+endif
 
 # Decide whether to build built-in, modular, or both.
 # Normally, just do built-in.
@@ -332,7 +340,7 @@ include $(srctree)/scripts/Kbuild.include
 
 AS		= $(CROSS_COMPILE)as
 LD		= $(CROSS_COMPILE)ld.bfd
-CC		= $ ccache $(CROSS_COMPILE)gcc
+CC		= $(CROSS_COMPILE)gcc
 CPP		= $(CC) -E
 AR		= $(CROSS_COMPILE)ar
 NM		= $(CROSS_COMPILE)nm
@@ -349,12 +357,23 @@ CHECK		= sparse
 
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
-CFLAGS_MODULE   =
-AFLAGS_MODULE   =
-LDFLAGS_MODULE  =
-CFLAGS_KERNEL	=
-AFLAGS_KERNEL	=
+ifdef CONFIG_CC_OPTIMIZE_ALOT
+MODFLAGS	= -DMODULE -O2 -fgcse-lm -fgcse-sm -fsched-spec-load -fforce-addr -fsingle-precision-constant -mcpu=cortex-a15 -mtune=cortex-a15 -fno-pic -marm -mfpu=neon-vfpv4 -ftree-vectorize -mvectorize-with-neon-quad
+else
+MODFLAGS	= -DMODULE -fgcse-lm -fgcse-sm -fsched-spec-load -fforce-addr -ffast-math -fsingle-precision-constant -mtune=cortex-a8 -fno-pic -marm -mfpu=neon -ftree-vectorize -mvectorize-with-neon-quad
+endif
+
+CFLAGS_MODULE   = $(MODFLAGS)
+AFLAGS_MODULE   = $(MODFLAGS)
+LDFLAGS_MODULE  = -T $(srctree)/scripts/module-common.lds
+ifdef CONFIG_CC_OPTIMIZE_ALOT
+CFLAGS_KERNEL	= -O3 -fgcse-lm -fgcse-sm -fsched-spec-load -fforce-addr -ffast-math -fsingle-precision-constant -mtune=cortex-a15 -marm -mfpu=neon-vfpv4 -funswitch-loops -mvectorize-with-neon-quad
+AFLAGS_KERNEL	= -O3 -fgcse-lm -fgcse-sm -fsched-spec-load -fforce-addr -ffast-math -fsingle-precision-constant -mtune=cortex-a15 -marm -mfpu=neon-vfpv4 -funswitch-loops -mvectorize-with-neon-quad
+else
+CFLAGS_KERNEL	= -O2 -fgcse-lm -fgcse-sm -fsched-spec-load -fforce-addr -ffast-math -fsingle-precision-constant -mtune=cortex-a15 -marm -mfpu=neon-vfpv4 -funswitch-loops -mvectorize-with-neon-quad
+AFLAGS_KERNEL	= 
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
+endif
 
 
 # Use LINUXINCLUDE when you must reference the include/ directory.
@@ -364,18 +383,28 @@ LINUXINCLUDE    := -I$(srctree)/arch/$(hdr-arch)/include \
                    $(if $(KBUILD_SRC), -I$(srctree)/include) \
                    -include $(srctree)/include/linux/kconfig.h
 
+ifdef CONFIG_CC_OPTIMIZE_ALOT
+KBUILD_CPPFLAGS := -D__KERNEL__ -O3 -fgcse-lm -fgcse-sm -fsched-spec-load -fforce-addr -fsingle-precision-constant -marm -mfpu=neon-vfpv4 -ftree-vectorize -mvectorize-with-neon-quad
+else
 KBUILD_CPPFLAGS := -D__KERNEL__
+endif
 
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
-		   -Wno-format-security \
-		   -fno-delete-null-pointer-checks
+           -Wno-format-security -Wno-unused-function -Wno-array-bounds -Wno-uninitialized \
+		   -fno-delete-null-pointer-checks -Wno-unused-variable -Wno-maybe-uninitialized -Wno-cpp -Wno-declaration-after-statement
+ifdef CONFIG_CC_OPTIMIZE_ALOT
+KBUILD_AFLAGS_KERNEL := -O3 -fgcse-lm -fgcse-sm -fsched-spec-load -fforce-addr -fsingle-precision-constant -marm -mfpu=neon-vfpv4 -ftree-vectorize -mvectorize-with-neon-quad
+KBUILD_CFLAGS_KERNEL := -O3 -fgcse-lm -fgcse-sm -fsched-spec-load -fforce-addr -fsingle-precision-constant -marm -mfpu=neon-vfpv4 -ftree-vectorize -mvectorize-with-neon-quad
+else		   
+		   -mfpu=neon-vfpv4 \
+		   -mfloat-abi=softfp
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS   := -D__ASSEMBLY__
 KBUILD_AFLAGS_MODULE  := -DMODULE
-KBUILD_CFLAGS_MODULE  := -DMODULE
+KBUILD_CFLAGS_MODULE  := -DMODULE -fgcse-lm -fgcse-sm -fsched-spec-load -fforce-addr -ffast-math -fsingle-precision-constant -mfpu=neon-vfpv4 -ftree-vectorize -funswitch-loops -Wno-cpp
 KBUILD_LDFLAGS_MODULE := -T $(srctree)/scripts/module-common.lds
 
 -include $(srctree)/$(MTK_PROJECT)_mtk_cust.mak
@@ -576,8 +605,15 @@ all: vmlinux
 
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os
-else
+endif
+ifdef CONFIG_CC_OPTIMIZE_DEFAULT
 KBUILD_CFLAGS	+= -O2
+endif
+ifdef CONFIG_CC_OPTIMIZE_ALOT
+KBUILD_CFLAGS	+= -O3
+endif
+ifdef CONFIG_CC_OPTIMIZE_FAST
+KBUILD_CFLAGS	+= -Ofast
 endif
 
 include $(srctree)/arch/$(SRCARCH)/Makefile
@@ -590,6 +626,8 @@ endif
 ifndef CONFIG_CC_STACKPROTECTOR
 KBUILD_CFLAGS += $(call cc-option, -fno-stack-protector)
 endif
+
+KBUILD_CFLAGS += $(call cc-disable-warning, array-bounds)
 
 # This warning generated too much noise in a regular build.
 # Use make W=1 to enable this warning (see scripts/Makefile.build)
@@ -1616,3 +1654,5 @@ FORCE:
 # Declare the contents of the .PHONY variable as phony.  We keep that
 # information in a variable so we can use it in if_changed and friends.
 .PHONY: $(PHONY)
+
+endif
